@@ -2,6 +2,12 @@
 # Created by https://www.gitignore.io/api/c++,xcode,visualstudio,openframeworks,visualstudiocode,openframeworks+visualstudio
 # Edit at https://www.gitignore.io/?templates=c++,xcode,visualstudio,openframeworks,visualstudiocode,openframeworks+visualstudio
 
+# ignore training data
+source/testimages
+source/testlabels
+source/trainingimages
+source/traininglabels
+
 ### C++ ###
 # Prerequisites
 *.d
