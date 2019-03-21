@@ -4,14 +4,25 @@
 
 Model model;
 
-// Creates a vector containing all the labels in a given file.
-// For ReadLabels test purposes.
+// Creates a vector containing all the labels in a given file
+// For ReadLabels testing purposes
 vector<int> create_vect_of_labels(string file_name) {
     string url = "../source/";
     url += file_name;
     vector<int> vect_of_labels = model.ReadLabels(url);
     return vect_of_labels;
 }
+
+// Creates a 2D array containing info about the trainingimages file
+// For ReadImageFiles testing purposes
+char **create_image_arr(string file_name) {
+    string url = "../source/";
+    url += file_name;
+    char **image_arr = model.ReadImageFile(url);
+    return image_arr;
+}
+
+// ------------------------------- READ LABELS TESTS ------------------------------------
 
 TEST_CASE("Tests ReadLabels Nonexistant URL") {
     vector<int> vect_of_labels = create_vect_of_labels("badurl.txt");
@@ -34,3 +45,24 @@ TEST_CASE("Tests ReadLabels Label Positions") {
     REQUIRE(1 == vect_of_labels[2162]);
     REQUIRE(2 == vect_of_labels[4999]);
 }
+
+// ------------------------------- READ IMAGE FILES TESTS ------------------------------------
+
+TEST_CASE("Tests ReadImageFile Nonexistant URL") {
+    char **image_arr = model.ReadImageFile("penguinpoppers.txt");
+    REQUIRE(NULL == image_arr[0]);
+}
+
+TEST_CASE("Tests ReadImageFile Bad URL") {
+    char **image_arr = create_image_arr(TRAINING_LABELS_FILENAME);
+    REQUIRE(NULL == image_arr[0]);
+}
+
+// TEST_CASE("Tests ReadImageFile Image Position") {
+//     char **image_arr = create_image_arr(TRAINING_IMAGES_FILENAME);
+//     cout << image_arr[0][0] << endl;
+//     REQUIRE(1 == 1);
+//     REQUIRE('+' == image_arr[72][5]);
+//     // REQUIRE(' ' == image_arr[72][5]);
+//     // REQUIRE('#' == image_arr[72][5]);
+// }

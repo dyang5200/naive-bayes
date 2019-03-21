@@ -46,6 +46,10 @@ char** Model::ReadImageFile(string file_name) {
         for (int line_num = 0; line_num < NUM_LINES; line_num++) {
             getline(input_file, line);
 
+            if (line.length() != DIM) {
+                continue;
+            }
+            
             // Fill in 2D array
             image_arr[line_num] = new char[DIM];
             for (int col = 0; col < DIM; col++) {
@@ -59,3 +63,21 @@ char** Model::ReadImageFile(string file_name) {
     }
     return image_arr;
 }
+
+// int main() {
+//     char **num = ReadFile(TRAINING_IMAGES_FILENAME);
+    
+//     for (int i = 0; i < NUM_IMAGES * DIM; i++) {
+//         for (int j = 0; j < DIM; j++) {
+//             cout << num[i][j];
+//         }
+//         cout << endl;
+//     }
+
+//     for (int i = 0; i < NUM_IMAGES * DIM; i++) {
+//         delete[] num[i];
+//     }
+//     delete[] num;
+
+//     return 0;
+// }
