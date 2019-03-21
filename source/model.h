@@ -30,13 +30,13 @@ using std::cin;
 
 class Model {
     private:
-        // A 4D array that contains data about each digit
+        // A 3D vector that contains data about each digit
         // First dimension: digit number 0-9
         // Second & Third dimension: 28x28 array of probabilities
-        // Fourth dimension: color type 
         //                  0: white
-        //                  1: black or grey
-        double data[TOTAL_DIGITS][DIM][DIM][1];
+        //                0.5: gray
+        //                  1: black
+        vector<vector<vector<double>>> data = vector<vector<vector<double>>>(TOTAL_DIGITS, vector<vector<double>>(DIM, vector<double>(DIM)));
 
         // A 2D array that holds the pixel color values for the current number being inspected
         char training_images[NUM_IMAGES * DIM][DIM];
@@ -45,7 +45,7 @@ class Model {
         vector<int> expected_digits;
 
         // A vector with 10 positions (0-9) that contains the total number of each digit in the traininglabels file
-        vector<int> total_digits = vector<int>(TOTAL_DIGITS);
+        vector<int> count_per_digit = vector<int>(TOTAL_DIGITS);
 
     public:
         enum Digits {
@@ -60,7 +60,7 @@ class Model {
         vector<int> ReadLabels(string file_name);
 
         // Returns a vector that contains the total count of each digit in the traininglabels file
-        vector<int> SetTotalDigits();
+        vector<int> SetCountPerDigit();
 
         // Reads in the trainingimages file
         // Returns a 2D char array that contains information about the pixels of the entire file
@@ -68,5 +68,8 @@ class Model {
 
         // Analyzes one image from the trainingimages data
         // starting_row: the row the image begins on
-        int AnalyzeImage(int starting_row);
+        vector<vector<vector<double>>> IncrementPixelFrequency(int digit_index);
+
+        // Returns the data 3D vector
+        vector<vector<vector<double>>> get_data();
 };

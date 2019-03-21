@@ -33,24 +33,24 @@ vector<int> Model::ReadLabels(string file_name) {
     return vect_of_labels;
 }
 
-vector<int> Model::SetTotalDigits() {
+vector<int> Model::SetCountPerDigit() {
     // If traininglabels was not analyzed yet
     if (expected_digits.size() == 0) {
-        return total_digits;
+        return count_per_digit;
     }
 
-    // initialize total_digits vector
+    // initialize count_per_digit vector
     for (int i = 0; i < TOTAL_DIGITS; i++) {
-        total_digits[i] = 0;
+        count_per_digit[i] = 0;
     }
 
-    // Increment each value in total_digits
+    // Increment each value in count_per_digit
     for (int i = 0; i < expected_digits.size(); i++) {
         int digit = expected_digits[i];
-        total_digits[digit] += 1;
+        count_per_digit[digit] += 1;
     }
 
-    return total_digits;
+    return count_per_digit;
 }
 
 char** Model::ReadImageFile(string file_name) {
@@ -59,7 +59,7 @@ char** Model::ReadImageFile(string file_name) {
 
     string line;
     ifstream input_file;
-    input_file.open(TRAINING_IMAGES_FILENAME);
+    input_file.open(file_name);
 
     if (input_file.is_open()) {
 
@@ -87,37 +87,31 @@ char** Model::ReadImageFile(string file_name) {
     return image_arr;
 }
 
-int Model::AnalyzeImage(int starting_row) {
+vector<vector<vector<double>>> Model::IncrementPixelFrequency(int digit_index) {
     // The digit the integer is expected to be
-    int expected_num = starting_row / DIM;
+    int expected_num = expected_digits[digit_index];
 
-    
+    // The row # in trainingimages to start on
+    int starting_row = digit_index * DIM;
 
-    for (int i = starting_row; i < starting_row + DIM; i++) {
+    // Iterate through image. Add 1.0 if black, 0.5 if grey, and 0 if white.
+    for (int i = 0; i < DIM; i++) {
         for (int j = 0; j < DIM; j++) {
-            if (training_images[i][j] == ' ') {
-                data[expected_num][i][j][0] = 0.0;
-            } else {
-                data[expected_num][i][j][0] = 1.0;
+            if (training_images[starting_row + i][j] == '#') {
+                data[expected_num][i][j] = data[expected_num][i][j] + 1.0;
+            } else if (training_images[starting_row + i][j] == '+') {
+                data[expected_num][i][j] = data[expected_num][i][j] + 0.5;
             }
         }
     }
+
+    return data;
 }
 
-// int main() {
-//     char **num = ReadFile(TRAINING_IMAGES_FILENAME);
-    
-//     for (int i = 0; i < NUM_IMAGES * DIM; i++) {
-//         for (int j = 0; j < DIM; j++) {
-//             cout << num[i][j];
-//         }
-//         cout << endl;
-//     }
+vector<vector<vector<double>>> Model::get_data() {
+    return data;
+}
 
-//     for (int i = 0; i < NUM_IMAGES * DIM; i++) {
-//         delete[] num[i];
-//     }
-//     delete[] num;
+// vector<vector<vector<double>>> CalculateProbability() {
 
-//     return 0;
 // }
