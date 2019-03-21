@@ -4,6 +4,8 @@
 
 Model model;
 
+// Creates a vector containing all the labels in a given file.
+// For ReadLabels test purposes.
 vector<int> create_vect_of_labels(string file_name) {
     string url = "../source/";
     url += file_name;

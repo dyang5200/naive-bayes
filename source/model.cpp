@@ -8,6 +8,7 @@ vector<int> Model::ReadLabels(string file_name) {
     input_file.open(file_name);
 
     if (input_file.is_open()) {
+
         while (!input_file.eof()) {
             // Read each line/integer from the expected integers file.
             string num;
@@ -22,9 +23,7 @@ vector<int> Model::ReadLabels(string file_name) {
             char num_as_int = CHAR_TO_INT(num.at(0));
             vect_of_labels.push_back(num_as_int);
         }
-
         input_file.close();
-        return vect_of_labels;
 
     } else {
         cout << "Unable to open file" << endl;
@@ -33,9 +32,30 @@ vector<int> Model::ReadLabels(string file_name) {
     return vect_of_labels;
 }
 
-// int main() {
-//     vector<int> vect_of_labels = ReadLabels(TRAINING_LABELS_FILENAME);
+char** Model::ReadImageFile(string file_name) {
+    // A 2D char array that contains information about all the images in the trainingimages file
+    char **image_arr = new char *[NUM_IMAGES * DIM];
 
-//     cout << vect_of_labels.size() << endl;
-//     return 0;
-// }
+    string line;
+    ifstream input_file;
+    input_file.open(TRAINING_IMAGES_FILENAME);
+
+    if (input_file.is_open()) {
+
+        // Read line for every line in the file
+        for (int line_num = 0; line_num < NUM_LINES; line_num++) {
+            getline(input_file, line);
+
+            // Fill in 2D array
+            image_arr[line_num] = new char[DIM];
+            for (int col = 0; col < DIM; col++) {
+                image_arr[line_num][col] = line.at(col);
+            }
+        }
+        input_file.close();
+
+    } else {
+        cout << "Unable to open file" << endl;
+    }
+    return image_arr;
+}
