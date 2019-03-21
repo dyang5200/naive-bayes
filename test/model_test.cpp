@@ -2,24 +2,36 @@
 #include "catch.hpp"
 #include "../source/model.h"
 
+const double EPSILON = pow(1, -15);
+
 Model model;
 
 // Creates a vector containing all the labels in a given file
-// For ReadLabels testing purposes
-vector<int> create_vect_of_labels(string file_name) {
+// For SetExpectedDigits testing purposes
+vector<int> CreateExpectedDigits(string file_name) {
     string url = "../source/";
     url += file_name;
-    vector<int> vect_of_labels = model.ReadLabels(url);
+    vector<int> vect_of_labels = model.SetExpectedDigits(url);
     return vect_of_labels;
 }
 
 // Creates a 2D array containing info about the trainingimages file
 // For ReadImageFiles testing purposes
-char **create_image_arr(string file_name) {
+char **CreateImageArr(string file_name) {
     string url = "../source/";
     url += file_name;
     char **image_arr = model.ReadImageFile(url);
     return image_arr;
+}
+
+// Initializes the training
+void InitializeTraining() {
+    CreateExpectedDigits(TRAINING_LABELS_FILENAME);
+    CreateImageArr(TRAINING_IMAGES_FILENAME);
+}
+
+bool AreEquivalent(double first, double second) {
+    return fabs(first - second) < EPSILON;
 }
 
 // ------------------------------- SET COUNT PER DIGIT TESTS -------------------------------
@@ -31,7 +43,7 @@ TEST_CASE("Tests SetCountPerDigit: TrainingLabels Not Initialized") {
 }
 
 TEST_CASE("Tests SetCountPerDigit: Length") {
-    vector<int> vect_of_labels = create_vect_of_labels(TRAINING_LABELS_FILENAME);
+    vector<int> vect_of_labels = CreateExpectedDigits(TRAINING_LABELS_FILENAME);
     vector<int> count_per_digit = model.SetCountPerDigit();
     REQUIRE(10 == count_per_digit.size());
 }
@@ -50,25 +62,25 @@ TEST_CASE("Tests SetCountPerDigit: Number of Digits") {
     REQUIRE(495 == count_per_digit[9]);
 }
 
-// ------------------------------- READ LABELS TESTS ------------------------------------
+// ------------------------------- SET EXPECTED DIGITS TESTS ------------------------------------
 
-TEST_CASE("Tests ReadLabels: Nonexistant URL") {
-    vector<int> vect_of_labels = create_vect_of_labels("badurl.txt");
+TEST_CASE("Tests SetExpectedDigits: Nonexistant URL") {
+    vector<int> vect_of_labels = CreateExpectedDigits("badurl.txt");
     REQUIRE(0 == vect_of_labels.size());
 }
 
-TEST_CASE("Tests ReadLabels: Bad URL") {
-    vector<int> vect_of_labels = create_vect_of_labels(TRAINING_IMAGES_FILENAME);
+TEST_CASE("Tests SetExpectedDigits: Bad URL") {
+    vector<int> vect_of_labels = CreateExpectedDigits(TRAINING_IMAGES_FILENAME);
     REQUIRE(0 == vect_of_labels.size());
 }
 
-TEST_CASE("Tests ReadLabels: Vector Length") {
-    vector<int> vect_of_labels = create_vect_of_labels(TRAINING_LABELS_FILENAME);
+TEST_CASE("Tests SetExpectedDigits: Vector Length") {
+    vector<int> vect_of_labels = CreateExpectedDigits(TRAINING_LABELS_FILENAME);
     REQUIRE(5000 == vect_of_labels.size());
 }
 
-TEST_CASE("Tests ReadLabels: Label Positions") {
-    vector<int> vect_of_labels = create_vect_of_labels(TRAINING_LABELS_FILENAME);
+TEST_CASE("Tests SetExpectedDigits: Label Positions") {
+    vector<int> vect_of_labels = CreateExpectedDigits(TRAINING_LABELS_FILENAME);
     REQUIRE(5 == vect_of_labels[0]);
     REQUIRE(1 == vect_of_labels[2162]);
     REQUIRE(2 == vect_of_labels[4999]);
@@ -82,12 +94,12 @@ TEST_CASE("Tests ReadImageFile: Nonexistant URL") {
 }
 
 TEST_CASE("Tests ReadImageFile: Bad URL") {
-    char **image_arr = create_image_arr(TRAINING_LABELS_FILENAME);
+    char **image_arr = CreateImageArr(TRAINING_LABELS_FILENAME);
     REQUIRE(NULL == image_arr[0]);
 }
 
 TEST_CASE("Tests ReadImageFile: Image Position") {
-    char **image_arr = create_image_arr(TRAINING_IMAGES_FILENAME);
+    char **image_arr = CreateImageArr(TRAINING_IMAGES_FILENAME);
     cout << image_arr[0][0] << endl;
     REQUIRE(1 == 1);
     REQUIRE('+' == image_arr[72][5]);
@@ -105,9 +117,7 @@ TEST_CASE("Tests Increment Pixel Frequency: Array Size") {
 }
 
 TEST_CASE("Tests Increment Pixel Frequency: One Image") {
-    vector<int> vect_of_labels = create_vect_of_labels(TRAINING_LABELS_FILENAME);
-    char **image_arr = create_image_arr(TRAINING_IMAGES_FILENAME);
-
+    InitializeTraining();
     vector<vector<vector<double>>> data = model.IncrementPixelFrequency(0);
     REQUIRE(0 == data[5][0][0]);
     REQUIRE(0.5 == data[5][7][20]);
@@ -115,9 +125,7 @@ TEST_CASE("Tests Increment Pixel Frequency: One Image") {
 }
 
 TEST_CASE("Tests Increment Pixel Frequency: Multiple Images, Same Digit") {
-    vector<int> vect_of_labels = create_vect_of_labels(TRAINING_LABELS_FILENAME);
-    char **image_arr = create_image_arr(TRAINING_IMAGES_FILENAME);
-
+    InitializeTraining();
     vector<vector<vector<double>>> data = model.IncrementPixelFrequency(0);
     data = model.IncrementPixelFrequency(11);
     REQUIRE(0 == data[5][0][0]);
@@ -125,9 +133,42 @@ TEST_CASE("Tests Increment Pixel Frequency: Multiple Images, Same Digit") {
 }
 
 TEST_CASE("Tests Increment Pixel Frequency: Multiple Images, Different Digits") {
-    vector<int> vect_of_labels = create_vect_of_labels(TRAINING_LABELS_FILENAME);
-    char **image_arr = create_image_arr(TRAINING_IMAGES_FILENAME);
-
+    InitializeTraining();
     vector<vector<vector<double>>> data = model.IncrementPixelFrequency(2);
     REQUIRE(0.5 == data[4][14][12]);
+}
+
+// ------------------------------- SET DATA VECTOR TESTS --------------------------------------------------
+
+TEST_CASE("Tests SetDataVector: Random Pixel Counts") {
+    InitializeTraining();
+    vector<vector<vector<double>>> data = model.SetDataVector();
+    REQUIRE(0 == data[1][3][3]);
+    REQUIRE(246 == data[5][7][16]);
+    REQUIRE(305 == data[7][15][15]);
+}
+
+// ------------------------------- CALCULATE CLASS PROBABILITIES TESTS ------------------------------------
+
+TEST_CASE("Tests CalculateClassProbability: Probabilities") {
+    CreateExpectedDigits(TRAINING_LABELS_FILENAME);
+    model.SetCountPerDigit();
+    vector<double> class_prob = model.CalculateClassProbability();
+
+    REQUIRE(AreEquivalent(0.0958, class_prob[0]));
+    REQUIRE(AreEquivalent(0.1126, class_prob[1]));
+    REQUIRE(AreEquivalent(0.0868, class_prob[5]));
+}
+
+TEST_CASE("Tests CalculateClassProbability: Total Probabilities") {
+    CreateExpectedDigits(TRAINING_LABELS_FILENAME);
+    model.SetCountPerDigit();
+    vector<double> class_prob = model.CalculateClassProbability();
+
+    double total_prob = 0;
+    for (int i = 0; i < class_prob.size(); i++) {
+        total_prob += class_prob[i];
+    }
+
+    REQUIRE(AreEquivalent(1.0, total_prob));
 }

@@ -47,6 +47,9 @@ class Model {
         // A vector with 10 positions (0-9) that contains the total number of each digit in the traininglabels file
         vector<int> count_per_digit = vector<int>(TOTAL_DIGITS);
 
+        // A vecctor containing the class probabilities for each digit class
+        vector<double> class_probabilities = vector<double>(TOTAL_DIGITS);
+
     public:
         enum Digits {
             Zero = 0, One = 1, Two = 2, Three = 3, Four = 4,
@@ -57,7 +60,7 @@ class Model {
         Model() = default;
 
         // Reads in (in order) the expected integer labels for each digit in the trainingimages file
-        vector<int> ReadLabels(string file_name);
+        vector<int> SetExpectedDigits(string file_name);
 
         // Returns a vector that contains the total count of each digit in the traininglabels file
         vector<int> SetCountPerDigit();
@@ -69,6 +72,16 @@ class Model {
         // Analyzes one image from the trainingimages data
         // starting_row: the row the image begins on
         vector<vector<vector<double>>> IncrementPixelFrequency(int digit_index);
+
+        // Sets the entire data vector with values
+        vector<vector<vector<double>>> SetDataVector();
+
+        // Calculates the pixel color probabilities of each pixel in each class.
+        vector<vector<vector<double>>> CalculatePixelProbability();
+        
+        // Calculates the probability of each class
+        // P(class) = (# training examples where class = c ) / (total training examples)
+        vector<double> CalculateClassProbability();
 
         // Returns the data 3D vector
         vector<vector<vector<double>>> get_data();

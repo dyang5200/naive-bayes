@@ -1,6 +1,6 @@
 #include "model.h"
 
-vector<int> Model::ReadLabels(string file_name) {
+vector<int> Model::SetExpectedDigits(string file_name) {
     // A vector that contains the expected labels for the digits in the training model.
     vector<int> vect_of_labels;
 
@@ -108,10 +108,24 @@ vector<vector<vector<double>>> Model::IncrementPixelFrequency(int digit_index) {
     return data;
 }
 
-vector<vector<vector<double>>> Model::get_data() {
+vector<vector<vector<double>>> Model::SetDataVector() {
+    for (int i = 0; i < NUM_IMAGES; i++) {
+        IncrementPixelFrequency(i);
+    }
     return data;
 }
 
-// vector<vector<vector<double>>> CalculateProbability() {
+vector<vector<vector<double>>> Model::CalculatePixelProbability() {
+}
 
-// }
+vector<double> Model::CalculateClassProbability() {
+    for (int digit = 0; digit < TOTAL_DIGITS; digit++) {
+        double count = count_per_digit[digit];
+        class_probabilities[digit] = count / NUM_IMAGES;
+    }
+    return class_probabilities;
+}
+
+vector<vector<vector<double>>> Model::get_data() {
+    return data;
+}
