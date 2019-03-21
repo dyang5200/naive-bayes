@@ -22,6 +22,34 @@ char **create_image_arr(string file_name) {
     return image_arr;
 }
 
+// ------------------------------- SET TOTAL DIGITS TESTS -------------------------------
+
+TEST_CASE("Tests SetTotalDigits TrainingLabels Not Initialized") {
+    vector<int> total_digits = model.SetTotalDigits();
+    REQUIRE(10 == total_digits.size());
+    REQUIRE(0 == total_digits[3]);
+}
+
+TEST_CASE("Tests SetTotalDigits Length") {
+    vector<int> vect_of_labels = create_vect_of_labels(TRAINING_LABELS_FILENAME);
+    vector<int> total_digits = model.SetTotalDigits();
+    REQUIRE(10 == total_digits.size());
+}
+
+TEST_CASE("Tests SetTotalDigits Number of Digits") {
+    vector<int> total_digits = model.SetTotalDigits();
+    REQUIRE(479 == total_digits[0]);
+    REQUIRE(563 == total_digits[1]);
+    REQUIRE(488 == total_digits[2]);
+    REQUIRE(493 == total_digits[3]);
+    REQUIRE(535 == total_digits[4]);
+    REQUIRE(434 == total_digits[5]);
+    REQUIRE(501 == total_digits[6]);
+    REQUIRE(550 == total_digits[7]);
+    REQUIRE(462 == total_digits[8]);
+    REQUIRE(495 == total_digits[9]);
+}
+
 // ------------------------------- READ LABELS TESTS ------------------------------------
 
 TEST_CASE("Tests ReadLabels Nonexistant URL") {
