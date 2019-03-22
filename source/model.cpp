@@ -1,38 +1,5 @@
 #include "model.h"
 
-vector<int> Model::SetExpectedDigits(string file_name) {
-    // A vector that contains the expected labels for the digits in the training model.
-    vector<int> vect_of_labels;
-
-    ifstream input_file;
-    input_file.open(file_name);
-
-    if (input_file.is_open()) {
-
-        while (!input_file.eof()) {
-            // Read each line/integer from the expected integers file.
-            string num;
-            getline(input_file, num);
-
-            // Continue to next line if there is an empty line or if the line does not contain one digit
-            if (num.length() != 1) {
-                continue;
-            }
-
-            // Add each number to vect_of_labels.
-            char num_as_int = CHAR_TO_INT(num.at(0));
-            vect_of_labels.push_back(num_as_int);
-        }
-        expected_digits = vect_of_labels;
-        input_file.close();
-
-    } else {
-        cout << "Unable to open file" << endl;
-    }
-
-    return vect_of_labels;
-}
-
 vector<int> Model::SetCountPerDigit() {
     // If traininglabels was not analyzed yet
     if (expected_digits.size() == 0) {
@@ -53,38 +20,11 @@ vector<int> Model::SetCountPerDigit() {
     return count_per_digit;
 }
 
-char** Model::ReadImageFile(string file_name) {
-    // A 2D char array that contains information about all the images in the trainingimages file
-    char **image_arr = new char *[NUM_IMAGES * DIM];
-
-    string line;
-    ifstream input_file;
-    input_file.open(file_name);
-
-    if (input_file.is_open()) {
-
-        // Read line for every line in the file
-        for (int line_num = 0; line_num < NUM_LINES; line_num++) {
-            getline(input_file, line);
-
-            // If the length of the line does not equal the dimension
-            if (line.length() != DIM) {
-                continue;
-            }
-
-            // Fill in 2D array
-            image_arr[line_num] = new char[DIM];
-            for (int col = 0; col < DIM; col++) {
-                training_images[line_num][col] = line.at(col);
-                image_arr[line_num][col] = line.at(col);
-            }
-        }
-        input_file.close();
-
-    } else {
-        cout << "Unable to open file" << endl;
+vector<vector<vector<double>>> Model::SetDataVector() {
+    for (int i = 0; i < NUM_IMAGES; i++) {
+        IncrementPixelFrequency(i);
     }
-    return image_arr;
+    return data;
 }
 
 vector<vector<vector<double>>> Model::IncrementPixelFrequency(int digit_index) {
@@ -105,13 +45,6 @@ vector<vector<vector<double>>> Model::IncrementPixelFrequency(int digit_index) {
         }
     }
 
-    return data;
-}
-
-vector<vector<vector<double>>> Model::SetDataVector() {
-    for (int i = 0; i < NUM_IMAGES; i++) {
-        IncrementPixelFrequency(i);
-    }
     return data;
 }
 
@@ -136,4 +69,12 @@ vector<double> Model::CalculateClassProbability() {
 
 vector<vector<vector<double>>> Model::get_data() {
     return data;
+}
+
+void Model::set_expected_digits(vector<int> input_digits) {
+    expected_digits = input_digits;
+}
+
+void Model::set_training_images(vector<vector<char>> input_vect) {
+    training_images = input_vect;
 }
