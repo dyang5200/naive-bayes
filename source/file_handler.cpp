@@ -185,7 +185,3 @@ vector<double> LoadClassProbabilities(string file_name) {
     }
     return class_prob;
 }
-
-// int main() {
-//     SaveToFile("data.txt", "class_prob.txt");
-// }

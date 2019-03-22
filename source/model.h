@@ -41,6 +41,9 @@ class Model {
         // A vecctor containing the class probabilities for each digit class
         vector<double> class_probabilities = vector<double>(TOTAL_DIGITS);
 
+        // The probability that a pixel is black or gray
+        double color_probability;
+
     public:
         // Model default constructor
         Model() = default;
@@ -57,6 +60,9 @@ class Model {
 
         // Calculates the pixel color probabilities of each pixel in each class.
         vector<vector<vector<double>>> CalculatePixelProbability();
+
+        // Calculates the color probability
+        double CalculateColorProbability();
         
         // Calculates the probability of each class
         // P(class) = (# training examples where class = c ) / (total training examples)

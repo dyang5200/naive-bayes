@@ -59,6 +59,25 @@ vector<vector<vector<double>>> Model::CalculatePixelProbability() {
     return data;
 }
 
+double Model::CalculateColorProbability() {
+    double num_black_pixels = 0;
+    int total_pixels = 0;
+    for (int i = 0; i < training_images.size(); i++) {
+        for (int j = 0; j < training_images[i].size(); j++) {
+            if (training_images[i][j] == '#') {
+                num_black_pixels += 1;
+            } else if (training_images[i][j] == '+') {
+                num_black_pixels += 0.5;
+            }
+
+            total_pixels++;
+        }
+    }
+
+    color_probability = num_black_pixels / total_pixels;
+    return color_probability;
+}
+
 vector<double> Model::CalculateClassProbability() {
     for (int digit = 0; digit < TOTAL_DIGITS; digit++) {
         double count = count_per_digit[digit];
