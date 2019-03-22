@@ -1,17 +1,17 @@
 #include "classifier.h"
 
-int main() {
-    Model model;
 
-    vector<int> expected_digits = ReadLabels(TRAINING_LABELS_FILENAME);
-    model.set_expected_digits(expected_digits);
+// vector<vector<vector<double>>> UpdateDataVect(vector<vector<vector<double>>> data) {
+//     // for (int digit = 0; digit < TOTAL_DIGITS; digit++) {
+//     //     for (int i = 0; i < data[digit]; i++) {
+//     //         for (int j = 0; j < data[digit][i]; j++) {
+                
+//     //         }
+//     //     }
+//     // }
+// }
 
-    vector<vector<char>> training_images = ReadImageFile(TRAINING_IMAGES_FILENAME);
-    model.set_training_images(training_images);
 
-    model.SetCountPerDigit();
-    model.SetDataVector();
-    model.CalculatePixelProbability();
-    model.CalculateClassProbability();
+// // int main() {
 
-}
+// // }

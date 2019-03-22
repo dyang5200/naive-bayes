@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "../source/file_reader.h"
+#include "../source/file_handler.h"
 
 const double DELTA = 0.0001;
 

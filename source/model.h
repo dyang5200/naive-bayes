@@ -1,14 +1,15 @@
 #include <string>
+#include <fstream>
 #include <vector>
 #include <iostream>
-#include <fstream>
 
 using std::string;
 using std::vector;
 using std::cout;
 using std::endl;
-using std::ifstream;
 using std::cin;
+using std::ifstream;
+using std::ofstream;
 
 // Dimension of each image. Given to be 28.
 #define DIM 28
@@ -16,12 +17,11 @@ using std::cin;
 #define NUM_IMAGES 5000
 #define NUM_LINES NUM_IMAGES * DIM
 
-// Converts a char into an integer
-#define CHAR_TO_INT(c) (c -'0')
+using std::ofstream;
 
 class Model {
     private:
-        // A 3D vector that contains data about each digit
+        // A 3D vector that contains data about the probabilities/counts of each digit
         // First dimension: digit number 0-9
         // Second & Third dimension: 28x28 array of probabilities
         //                  0: white
@@ -64,6 +64,9 @@ class Model {
 
         // Returns the data 3D vector
         vector<vector<vector<double>>> get_data();
+
+        // Returns the vector that contains probabilities for each digit class
+        vector<double> get_class_probabilities();
 
         // Sets the expected_digits vector
         void set_expected_digits(vector<int> input_digits);

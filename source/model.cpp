@@ -71,6 +71,10 @@ vector<vector<vector<double>>> Model::get_data() {
     return data;
 }
 
+vector<double> Model::get_class_probabilities() {
+    return class_probabilities;
+}
+
 void Model::set_expected_digits(vector<int> input_digits) {
     expected_digits = input_digits;
 }
