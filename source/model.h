@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <iostream>
+#include <math.h>
 
 using std::string;
 using std::vector;
@@ -60,9 +61,6 @@ class Model {
 
         // Calculates the pixel color probabilities of each pixel in each class.
         vector<vector<vector<double>>> CalculatePixelProbability();
-
-        // Calculates the color probability
-        double CalculateColorProbability();
         
         // Calculates the probability of each class
         // P(class) = (# training examples where class = c ) / (total training examples)

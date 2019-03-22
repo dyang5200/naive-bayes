@@ -105,16 +105,6 @@ TEST_CASE("Tests SetDataVector: Random Pixel Counts") {
     REQUIRE(305 == data[7][15][15]);
 }
 
-// ------------------------------- CALCULATE COLOR PROBABILITY TESTS ------------------------------------
-
-TEST_CASE("Tests CalculateColorProbability") {
-    InitializeTraining();
-    model.SetCountPerDigit();
-    double color_prob = model.CalculateColorProbability();
-
-    REQUIRE(AreEquivalent(0.14146, color_prob));
-}
-
 // ------------------------------- CALCULATE PIXEL PROBABILITY TESTS ------------------------------------
 
 TEST_CASE("Tests CalculatePixelProbability") {
