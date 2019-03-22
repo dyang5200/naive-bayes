@@ -2,7 +2,7 @@
 #include "catch.hpp"
 #include "../source/model.h"
 
-const double EPSILON = pow(1, -15);
+const double EPSILON = 0.0001;
 
 Model model;
 
@@ -148,7 +148,19 @@ TEST_CASE("Tests SetDataVector: Random Pixel Counts") {
     REQUIRE(305 == data[7][15][15]);
 }
 
-// ------------------------------- CALCULATE CLASS PROBABILITIES TESTS ------------------------------------
+// ------------------------------- CALCULATE PIXEL PROBABILITY TESTS ------------------------------------
+
+TEST_CASE("Tests CalculatePixelProbability: Probabilities") {
+    CreateExpectedDigits(TRAINING_LABELS_FILENAME);
+    model.SetCountPerDigit();
+    vector<vector<vector<double>>> data = model.CalculatePixelProbability();
+
+    REQUIRE(AreEquivalent(0.2704, data[0][16][23]));
+    REQUIRE(AreEquivalent(0.1653, data[3][11][10]));
+    REQUIRE(AreEquivalent(0.0, data[8][24][25]));
+}
+
+// ------------------------------- CALCULATE CLASS PROBABILITY TESTS ------------------------------------
 
 TEST_CASE("Tests CalculateClassProbability: Probabilities") {
     CreateExpectedDigits(TRAINING_LABELS_FILENAME);

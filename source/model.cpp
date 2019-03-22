@@ -116,6 +116,14 @@ vector<vector<vector<double>>> Model::SetDataVector() {
 }
 
 vector<vector<vector<double>>> Model::CalculatePixelProbability() {
+    for (int digit = 0; digit < TOTAL_DIGITS; digit++) {
+        for (int i = 0; i < DIM; i++) {
+            for (int j = 0; j < DIM; j++) {
+                data[digit][i][j] = data[digit][i][j] / count_per_digit[digit];
+            }
+        }
+    }
+    return data;
 }
 
 vector<double> Model::CalculateClassProbability() {
