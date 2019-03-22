@@ -9,6 +9,8 @@ source/trainingimages
 source/traininglabels
 test/trainingimages
 test/traininglabels
+test/testimages
+test/testlabels
 
 ### C++ ###
 # Prerequisites

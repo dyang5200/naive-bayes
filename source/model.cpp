@@ -62,7 +62,7 @@ vector<vector<vector<double>>> Model::CalculatePixelProbability() {
 vector<double> Model::CalculateClassProbability() {
     for (int digit = 0; digit < TOTAL_DIGITS; digit++) {
         double count = count_per_digit[digit];
-        class_probabilities[digit] = count / NUM_IMAGES;
+        class_probabilities[digit] = (count + K) / (NUM_IMAGES + (2 * K));
     }
     return class_probabilities;
 }

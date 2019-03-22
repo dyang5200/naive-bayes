@@ -15,7 +15,6 @@ int main() {
         }
 
         // cout << "MY CLASSIFICATION: " << classification << "         EXPECTED: " << expected_digits[i] << endl;
-        // cout << "SIZE: " << expected_digits.size();
     }
 
     double percent_classified = correct / expected_digits.size();

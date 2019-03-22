@@ -4,17 +4,14 @@ void Classifier::SetUp() {
     expected_digits = ReadLabelsFile(TEST_LABELS_FILENAME);
     all_images = ReadImageFile(TEST_IMAGES_FILENAME);
 
-    Model model = TrainModel(TRAINING_LABELS_FILENAME, TRAINING_IMAGES_FILENAME);
-    SaveToFile(DATA_FILE, CLASS_PROB_FILE);
-
     // class_prob = model.get_class_probabilities();
     // data = model.get_data();
 
-    class_prob = LoadClassProbabilities("class_prob.txt");
-    data = LoadModel("data.txt");
+    class_prob = LoadClassProbabilities(CLASS_PROB_FILE);
+    data = LoadModel(DATA_FILE);
 }
 
-double Classifier::GetPosteriorProbability(vector<vector<char>> image, int digit) {
+double Classifier::GetPosteriorProb(vector<vector<char>> image, int digit) {
     vector<vector<double>> probabilities = vector<vector<double>>(DIM, vector<double>(DIM));
 
     for (int i = 0; i < image.size(); i++) {
@@ -24,42 +21,46 @@ double Classifier::GetPosteriorProbability(vector<vector<char>> image, int digit
             } else {
                 probabilities[i][j] = data[digit][i][j];
             }
-
-            cout << "PROBABILITY: " << probabilities[i][j] << endl;
         }
     }
 
-    double probability = log2(class_prob[digit]);
+    double probability = log10(class_prob[digit]);
 
     for (int i = 0; i < probabilities.size(); i++) {
         for (int j = 0; j < probabilities[i].size(); j++) {
-            probability *= log2(probabilities[i][j]);
+            probability += log10(probabilities[i][j]);
         }
     }
 
     return probability;
 }
 
-vector<double> Classifier::GetAllPosteriorProbabilities(vector<vector<char>> image) {
+vector<double> Classifier::GetAllPosteriorProbs(vector<vector<char>> image) {
 
     vector<double> posterior_probabilities = vector<double>(TOTAL_DIGITS);
     for (int digit = 0; digit < TOTAL_DIGITS; digit++) {
-        posterior_probabilities[digit] = GetPosteriorProbability(image, digit);
+        posterior_probabilities[digit] = GetPosteriorProb(image, digit);
     }
 
     return posterior_probabilities;
 }
 
-int Classifier::ClassifyImage(int starting_row) {
+vector<vector<char>> Classifier::CreateImageVector(int start_index) {
     vector<vector<char>> image = vector<vector<char>>(DIM, vector<char>(DIM));
 
-    for (int i = starting_row; i < starting_row + DIM; i++) {
+    for (int i = start_index; i < start_index + DIM; i++) {
         for (int j = 0; j < DIM; j++) {
-            image[i - starting_row][j] = all_images[i][j];
+            image[i - start_index][j] = all_images[i][j];
         }
     }
 
-    vector<double> posterior_probabilities = GetAllPosteriorProbabilities(image);
+    return image;
+}
+
+int Classifier::ClassifyImage(int start_index) {
+    vector<vector<char>> image = CreateImageVector(start_index);
+
+    vector<double> posterior_probabilities = GetAllPosteriorProbs(image);
 
     double max_prob = posterior_probabilities[0];
     int most_possible_int = 0;

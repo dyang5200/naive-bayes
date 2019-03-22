@@ -12,13 +12,16 @@ using std::cin;
 using std::ifstream;
 using std::ofstream;
 
+// K value for Laplace Smoothing
+#define K 0.5
 // Dimension of each image. Given to be 28.
 #define DIM 28
+// Total number of digits (0-9)
 #define TOTAL_DIGITS 10
+// Total number of images in testing file
 #define NUM_IMAGES 5000
+// Total number of lines in testing file
 #define NUM_LINES NUM_IMAGES * DIM
-
-using std::ofstream;
 
 class Model {
     private:

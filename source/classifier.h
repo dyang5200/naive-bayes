@@ -22,13 +22,18 @@ class Classifier {
         void SetUp();
 
         // Calculates one posterior probability for a given digit
-        double GetPosteriorProbability(vector<vector<char>> image, int digit);
+        double GetPosteriorProb(vector<vector<char>> image, int digit);
 
         // Gets all the posterior probabilities for a single image
-        vector<double> GetAllPosteriorProbabilities(vector<vector<char>> image);
+        vector<double> GetAllPosteriorProbs(vector<vector<char>> image);
+
+        // Creates a 2D vector representing a single image
+        vector<vector<char>> CreateImageVector(int start_index);
 
         // Classify a single image
-        int ClassifyImage(int starting_row);
+        int ClassifyImage(int start_index);
 
         vector<int> get_expected_digits() { return expected_digits; };
+
+        vector<vector<char>> get_all_images() { return all_images; };
 };

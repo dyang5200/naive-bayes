@@ -11,17 +11,20 @@ bool AreEquivalent(double first, double second) {
     return fabs(first - second) < DELTA;
 }
 
-// Initializes everything
 void Initialize() {
-    vector<int> expected_digits = ReadLabelsFile(TEST_LABELS_FILENAME);
-    vector<vector<char>> all_images = ReadImageFile(TEST_IMAGES_FILENAME);
 
-    vector<double> class_prob = LoadClassProbabilities("class_prob.txt");
-    vector<vector<vector<double>>> data = LoadModel("data.txt");
 }
 
-// ------------------------------- GET ONE POSTERIOR PROBABILITY TESTS ------------------------------------
+// ------------------------------- GET POSTERIOR PROBABILITY TESTS ------------------------------------
 
+TEST_CASE("Tests GetPosterior Probability: ") {
+    classifier.SetUp();
+    vector<vector<char>> image = classifier.CreateImageVector(28);
+    double prob = classifier.GetPosteriorProb(image, 0);
+    REQUIRE(0.4 == prob);
+}
+
+// ------------------------------- CLASSIFIER TEST ----------------------------------------------------
 TEST_CASE("Tests Classifer") {
-    REQUIRE(0.80 == percent_classified);
+    // REQUIRE(0.80 == percent_classified);
 }
