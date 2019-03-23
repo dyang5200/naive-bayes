@@ -3,6 +3,8 @@
 int main() {
     Classifier classifier;
     classifier.SetUp();
-    classifier.ClassifyAll(classifier);
+    double percent_correct = classifier.ClassifyAll(classifier);
     classifier.PrintConfusionMatrix();
+
+    cout << endl << "Percent Correct: " << percent_correct << endl;
 }

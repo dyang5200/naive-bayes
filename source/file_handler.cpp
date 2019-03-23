@@ -109,7 +109,7 @@ void SaveToFile(string data_filename, string class_prob_filename) {
 
         output_file.close();
     } else {
-        cout << "Unable to open output file";
+        cout << "Unable to open output file" << endl;
     }
 }
 
@@ -124,7 +124,7 @@ void SaveClassProbsToFile(Model model, string file_name) {
         }
 
     } else {
-        cout << "Unable to open output file";
+        cout << "Unable to open output file" << endl;
     }
 }
 

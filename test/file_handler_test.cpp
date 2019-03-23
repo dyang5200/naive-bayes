@@ -111,8 +111,7 @@ TEST_CASE("Tests TrainModel: Data Vector Size") {
 TEST_CASE("Tests TrainModel: Data Vector Values") {
     Model model = SetUpAndTrainModel();
     vector<vector<vector<double>>> data = model.get_data();
-    REQUIRE(AreEquivalent(0.0, data[0][0][0]));
-    REQUIRE(AreEquivalent(0.68037, data[4][12][18]));
+    REQUIRE(AreEquivalent(0.68004, data[4][12][18]));
 }
 
 TEST_CASE("Tests TrainModel: Class Probabilities Vector Size") {
@@ -159,5 +158,5 @@ TEST_CASE("Tests LoadModel: Vector Values") {
     Model model = SetUpAndTrainModel();
     SaveToFile("data.txt", "class_prob.txt");
     vector<vector<vector<double>>> data = LoadModel("data.txt");
-    REQUIRE(AreEquivalent(0.3486, data[0][15][10]));
+    REQUIRE(AreEquivalent(0.3489, data[0][15][10]));
 }

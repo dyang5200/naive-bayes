@@ -31,19 +31,19 @@ vector<vector<char>> Initialize(int starting_index) {
 TEST_CASE("Tests GetPosteriorProb: Image = 0, Digit = 0") {
     vector<vector<char>> image = Initialize(28);
     double prob = classifier.GetPosteriorProb(image, 0);
-    REQUIRE(AreEquivalent(-78.65751270, prob));
+    REQUIRE(AreEquivalent(-78.88370, prob));
 }
 
 TEST_CASE("Tests GetPosteriorProb: Image = 0, Digit = 3") {
     vector<vector<char>> image = Initialize(28);
     double prob = classifier.GetPosteriorProb(image, 3);
-    REQUIRE(AreEquivalent(-110.002300991, prob));
+    REQUIRE(AreEquivalent(-110.08413, prob));
 }
 
 TEST_CASE("Tests GetPosteriorProb: Image = 9, Digit = 5") {
     vector<vector<char>> image = Initialize(0);
     double prob = classifier.GetPosteriorProb(image, 5);
-    REQUIRE(AreEquivalent(-91.87296, prob));
+    REQUIRE(AreEquivalent(-91.620066, prob));
 }
 
 // ------------------------------- GET ALL POSTERIOR PROBABILITIES TESTS ------------------------------------
@@ -51,14 +51,14 @@ TEST_CASE("Tests GetPosteriorProb: Image = 9, Digit = 5") {
 TEST_CASE("Tests GetAllPosteriorProbs: Image = 0") {
     vector<vector<char>> image = Initialize(28);
     vector<double> probs = classifier.GetAllPosteriorProbs(image);
-    REQUIRE(AreEquivalent(-78.6579, probs[0]));
-    REQUIRE(AreEquivalent(-105.106, probs[8]));
+    REQUIRE(AreEquivalent(-78.8837, probs[0]));
+    REQUIRE(AreEquivalent(-105.2255, probs[8]));
 }
 
 TEST_CASE("Tests GetAllPosteriorProbs: Image = 9") {
     vector<vector<char>> image = Initialize(0);
     vector<double> probs = classifier.GetAllPosteriorProbs(image);
-    REQUIRE(AreEquivalent(-70.6831, probs[9]));
+    REQUIRE(AreEquivalent(-70.88089, probs[9]));
 }
 
 // ------------------------------- CLASSIFY IMAGE TESTS ---------------------------------------------
@@ -84,9 +84,9 @@ TEST_CASE("Tests CreateConfusionMatrix: Select Values") {
     newClassifier.SetUp();
     newClassifier.ClassifyAll(newClassifier);
     vector<vector<double>> confusion_matrix = newClassifier.get_confusion_matrix();
-    REQUIRE(AreEquivalent(0.8889, confusion_matrix[0][0]));
+    REQUIRE(AreEquivalent(0.9111, confusion_matrix[0][0]));
     REQUIRE(AreEquivalent(0.8400, confusion_matrix[3][3]));
-    REQUIRE(AreEquivalent(0.01087, confusion_matrix[5][7]));
+    REQUIRE(AreEquivalent(0.0109, confusion_matrix[5][7]));
     REQUIRE(AreEquivalent(0.0, confusion_matrix[0][9]));
 }
 

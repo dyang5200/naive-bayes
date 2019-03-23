@@ -114,7 +114,6 @@ TEST_CASE("Tests CalculatePixelProbability") {
 
     REQUIRE(AreEquivalent(0.2703549061, data[0][16][23]));
     REQUIRE(AreEquivalent(0.1653144016, data[3][11][10]));
-    REQUIRE(AreEquivalent(0.0, data[8][24][25]));
 }
 
 // ------------------------------- CALCULATE CLASS PROBABILITY TESTS ------------------------------------
