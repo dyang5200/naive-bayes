@@ -69,15 +69,11 @@ class Model {
         // P(class) = (# training examples where class = c ) / (total training examples)
         vector<double> CalculateClassProbability();
 
-        // Returns the data 3D vector
-        vector<vector<vector<double>>> get_data();
+        vector<vector<vector<double>>> get_data() { return data; };
 
-        // Returns the vector that contains probabilities for each digit class
-        vector<double> get_class_probabilities();
+        vector<double> get_class_probabilities() { return class_probabilities; };
 
-        // Sets the expected_digits vector
-        void set_expected_digits(vector<int> input_digits);
+        void set_expected_digits(vector<int> input_digits) { expected_digits = input_digits; };
 
-        // Sets the training_images vector
-        void set_training_images(vector<vector<char>> input_vect);
+        void set_training_images(vector<vector<char>> input_vect) { training_images = input_vect; };
 };
