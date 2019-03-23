@@ -1,4 +1,5 @@
 #include "file_handler.h"
+#include <iomanip>
 
 #define DATA_FILE "data.txt"
 #define CLASS_PROB_FILE "class_prob.txt"
@@ -17,6 +18,16 @@ class Classifier {
         // Contains the data from the training file
         vector<vector<vector<double>>> data = vector<vector<vector<double>>>(TOTAL_DIGITS, vector<vector<double>>(DIM, vector<double>(DIM)));
 
+        // A vector containing the classifications of each integer
+        // [digit expected][digit classified]
+        vector<vector<double>> classifications = vector<vector<double>>(TOTAL_DIGITS, vector<double>(TOTAL_DIGITS));
+
+        // The number of labels per each digit in testlabels file
+        vector<double> count_per_digit = vector<double>(TOTAL_DIGITS);
+
+        // Confusion matrix
+        vector<vector<double>> confusion_matrix = vector<vector<double>>(TOTAL_DIGITS, vector<double>(TOTAL_DIGITS));
+
     public:
         // Sets up the Classifier, loads training data, etc
         void SetUp();
@@ -31,9 +42,20 @@ class Classifier {
         vector<vector<char>> CreateImageVector(int start_index);
 
         // Classify a single image
-        int ClassifyImage(int start_index);
+        int ClassifyImage(int start_index, int expected);
+
+        // Creates the confusion matrix to show how accurate the model is
+        vector<vector<double>> CreateConfusionMatrix();
+
+        // Prints the confusion matrix
+        void PrintConfusionMatrix();
+
+        // Classifies all images in the testimages file. Returns the percentage of correct classifications
+        double ClassifyAll(Classifier classifier);
 
         vector<int> get_expected_digits() { return expected_digits; };
 
         vector<vector<char>> get_all_images() { return all_images; };
+
+        vector<vector<double>> get_confusion_matrix() { return confusion_matrix; };
 };

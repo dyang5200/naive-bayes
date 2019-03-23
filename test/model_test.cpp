@@ -2,7 +2,7 @@
 #include "catch.hpp"
 #include "../source/file_handler.h"
 
-const double DELTA = 0.0001;
+const double DELTA = 0.001;
 
 Model model;
 
@@ -95,7 +95,7 @@ TEST_CASE("Tests Increment Pixel Frequency: Multiple Images, Different Digits") 
     REQUIRE(0.5 == data[4][14][12]);
 }
 
-// ------------------------------- SET DATA VECTOR TESTS --------------------------------------------------
+// ------------------------------- SET DATA VECTOR TESTS ------------------------------------------------
 
 TEST_CASE("Tests SetDataVector: Random Pixel Counts") {
     InitializeTraining();
@@ -112,8 +112,8 @@ TEST_CASE("Tests CalculatePixelProbability") {
     model.SetCountPerDigit();
     vector<vector<vector<double>>> data = model.CalculatePixelProbability();
 
-    REQUIRE(AreEquivalent(0.2704, data[0][16][23]));
-    REQUIRE(AreEquivalent(0.1653, data[3][11][10]));
+    REQUIRE(AreEquivalent(0.2703549061, data[0][16][23]));
+    REQUIRE(AreEquivalent(0.1653144016, data[3][11][10]));
     REQUIRE(AreEquivalent(0.0, data[8][24][25]));
 }
 
@@ -124,9 +124,9 @@ TEST_CASE("Tests CalculateClassProbability: Probabilities") {
     model.SetCountPerDigit();
     vector<double> class_prob = model.CalculateClassProbability();
 
-    REQUIRE(AreEquivalent(0.0958, class_prob[0]));
-    REQUIRE(AreEquivalent(0.1126, class_prob[1]));
-    REQUIRE(AreEquivalent(0.0868, class_prob[5]));
+    REQUIRE(AreEquivalent(0.0958808238, class_prob[0]));
+    REQUIRE(AreEquivalent(0.1126774645, class_prob[1]));
+    REQUIRE(AreEquivalent(0.0868826235, class_prob[5]));
 }
 
 TEST_CASE("Tests CalculateClassProbability: Total Probabilities") {
@@ -139,5 +139,5 @@ TEST_CASE("Tests CalculateClassProbability: Total Probabilities") {
         total_prob += class_prob[i];
     }
 
-    REQUIRE(AreEquivalent(1.0, total_prob));
+    REQUIRE(AreEquivalent(1.00000000, total_prob));
 }
